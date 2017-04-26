@@ -5,27 +5,26 @@
  */
 package TPV;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
+import java.util.ArrayList;
+import javax.swing.SpinnerNumberModel;
+
 
 /**
  *
  * @author almc
  */
 public class Interfaz extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Interfaz
-     */
+    private ListaProductos lista = new ListaProductos();
+    private ArrayList<String> nombres;
+    private ArrayList<Float> precios;
+    
     public Interfaz() {
         initComponents();
-        String productos[] = {"prod1","prod2","prod3"};
-        JComboBox jcb = new JComboBox(productos);
-        TableColumn tc1 = tabla.getColumnModel().getColumn(1);
-        TableCellEditor tce1 = new DefaultCellEditor(jcb);
-        tc1.setCellEditor(tce1);
+        nombres = lista.nombres();
+        precios = lista.precios();
+        for(String s:nombres) {
+            jcb.addItem(s);
+        }
     }
 
     /**
@@ -39,6 +38,11 @@ public class Interfaz extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
+        jcb = new javax.swing.JComboBox<>();
+        lblID = new javax.swing.JLabel();
+        panel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        spin = new javax.swing.JSpinner(new SpinnerNumberModel(0,0,500,1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TPV");
@@ -54,10 +58,10 @@ public class Interfaz extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -70,16 +74,44 @@ public class Interfaz extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabla);
         if (tabla.getColumnModel().getColumnCount() > 0) {
-            tabla.getColumnModel().getColumn(0).setMaxWidth(40);
+            tabla.getColumnModel().getColumn(0).setResizable(false);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(5);
             tabla.getColumnModel().getColumn(1).setResizable(false);
-            tabla.getColumnModel().getColumn(2).setMaxWidth(1000);
-            tabla.getColumnModel().getColumn(3).setMaxWidth(100);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(300);
+            tabla.getColumnModel().getColumn(2).setResizable(false);
+            tabla.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 660, 230));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 660, 230));
+
+        jcb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un producto" }));
+        jcb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jcb, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, 460, -1));
+
+        lblID.setBorder(javax.swing.BorderFactory.createTitledBorder("ID"));
+        getContentPane().add(lblID, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 60, 50));
+
+        panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        getContentPane().add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 660, 70));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 200, 10, 310));
+        getContentPane().add(spin, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 60, 90, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jcbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbActionPerformed
+        if(!jcb.getModel().getSelectedItem().equals("Seleccione un producto")) {
+            String producto = (String)jcb.getModel().getSelectedItem();
+            String id = Integer.toString(Consultas.consultaID(producto));
+            lblID.setText(id);
+        }else{
+            lblID.setText("");
+        }
+    }//GEN-LAST:event_jcbActionPerformed
 
     /**
      * @param args the command line arguments
@@ -117,7 +149,12 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox<String> jcb;
+    private javax.swing.JLabel lblID;
+    private javax.swing.JPanel panel;
+    private javax.swing.JSpinner spin;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }

@@ -367,15 +367,7 @@ public class GestionarContactos extends javax.swing.JFrame {
         }
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
-    
-    public void escribirObjeto() {
         
-    }
-    
-    public void eliminarObjeto() {
-        
-    }
-    
     public void actualizarModelo() {
         modelo.removeAllElements();
         try {

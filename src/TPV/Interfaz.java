@@ -148,11 +148,11 @@ public class Interfaz extends javax.swing.JFrame {
             Producto producto = new Producto(Integer.parseInt(lblID.getText()),nombre,precio);
             
             DefaultTableModel modelo = (DefaultTableModel)tabla.getModel();
-            Object[] fila = new Object[3];
+            Object[] fila = new Object[4];
             fila[0] = producto.getId();
             fila[1] = producto.getNombre();
             fila[2] = cantidad;
-//            fila[3] = producto.getPrecio();
+            fila[3] = producto.getPrecio();
             modelo.addRow(fila);
         }
     }//GEN-LAST:event_btnAddActionPerformed

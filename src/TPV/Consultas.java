@@ -12,13 +12,11 @@ public class Consultas {
     private static void abrir() {
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Cargado...");
             String cadenaconexion, usuario, pass;
             usuario = "tpvadmin";
             pass = "tpvadmin";
             cadenaconexion = "jdbc:mysql://localhost/tpv";
             conexion = (Connection) DriverManager.getConnection(cadenaconexion,usuario,pass);
-            System.out.println("Base de datos conectada.");
         } catch (ClassNotFoundException ex) {
              System.out.println("Driver no cargado");           
         } catch (SQLException ex) {
@@ -26,7 +24,7 @@ public class Consultas {
         }
     }
     
-    private static void cerrar() {
+    public static void cerrar() {
         if (conexion!=null) {
             try {
                 conexion.close();
@@ -49,12 +47,27 @@ public class Consultas {
             while (rs.next()) {
                 id = rs.getInt("idPRODUCTO");
             }
-            System.out.println("Lista llena");
         } catch (SQLException ex) {
             System.out.println("Error en consulta");
         }
+        return id;
+    }
+    
+    public static float consultaPrecio(String nombre) {
+        float id = 0;
+        abrir();
         
-        cerrar();
+        try {
+            String sql = "SELECT precio FROM producto WHERE nombre='"+nombre+"'";
+            Statement st = conexion.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while (rs.next()) {
+                id = rs.getFloat("precio");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error en consulta");
+        }
         return id;
     }
 }

@@ -6,7 +6,9 @@
 package TPV;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -16,12 +18,10 @@ import javax.swing.SpinnerNumberModel;
 public class Interfaz extends javax.swing.JFrame {
     private ListaProductos lista = new ListaProductos();
     private ArrayList<String> nombres;
-    private ArrayList<Float> precios;
     
     public Interfaz() {
         initComponents();
         nombres = lista.nombres();
-        precios = lista.precios();
         for(String s:nombres) {
             jcb.addItem(s);
         }
@@ -42,16 +42,23 @@ public class Interfaz extends javax.swing.JFrame {
         lblID = new javax.swing.JLabel();
         panel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        spin = new javax.swing.JSpinner(new SpinnerNumberModel(0,0,500,1));
+        spin = new javax.swing.JSpinner(new SpinnerNumberModel(1,1,500,1));
+        btnAdd = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TPV");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+
             },
             new String [] {
                 "ID", "Nombre", "Cantidad", "Precio"
@@ -100,6 +107,22 @@ public class Interfaz extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 200, 10, 310));
         getContentPane().add(spin, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 60, 90, -1));
 
+        btnAdd.setText("AGREGAR PRODUCTO");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 210, 50));
+
+        btnDelete.setText("ELIMINAR PRODUCTO");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, 230, 50));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -112,6 +135,37 @@ public class Interfaz extends javax.swing.JFrame {
             lblID.setText("");
         }
     }//GEN-LAST:event_jcbActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Consultas.cerrar();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        if(!jcb.getModel().getSelectedItem().equals("Seleccione un producto")) {
+            String nombre = (String)jcb.getModel().getSelectedItem();
+            float precio = Consultas.consultaPrecio(nombre);
+            int cantidad = (int) spin.getValue();
+            Producto producto = new Producto(Integer.parseInt(lblID.getText()),nombre,precio);
+            
+            DefaultTableModel modelo = (DefaultTableModel)tabla.getModel();
+            Object[] fila = new Object[3];
+            fila[0] = producto.getId();
+            fila[1] = producto.getNombre();
+            fila[2] = cantidad;
+//            fila[3] = producto.getPrecio();
+            modelo.addRow(fila);
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel)tabla.getModel();
+        int r = tabla.getSelectedRow();
+        if(r<0) {
+            JOptionPane.showMessageDialog(this,"Debe seleccionar un registro");
+        }else{
+            modelo.removeRow(r);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -149,6 +203,8 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> jcb;

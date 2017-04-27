@@ -17,19 +17,16 @@ public class ListaProductos extends ArrayList{
         this.removeAll(this);
         this.conectar();
         this.llenarLista();
-        this.cerrarConexion();
     }
     
     public void conectar() {
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Cargado...");
             String cadenaconexion, usuario, pass;
             usuario = "tpvadmin";
             pass = "tpvadmin";
             cadenaconexion = "jdbc:mysql://localhost/tpv";
             conexion = (Connection) DriverManager.getConnection(cadenaconexion,usuario,pass);
-            System.out.println("Base de datos conectada.");
         } catch (ClassNotFoundException ex) {
              System.out.println("Driver no cargado");           
         } catch (SQLException ex) {
@@ -47,20 +44,8 @@ public class ListaProductos extends ArrayList{
                 producto = new Producto(rs.getInt("idPRODUCTO"),rs.getString("nombre"),rs.getFloat("precio"));
                 lista.add(producto);
             }
-            System.out.println("Lista llena");
         } catch (SQLException ex) {
             System.out.println("Error en consulta");
-        }
-    }
-    
-    public void cerrarConexion() {
-        if (conexion!=null) {
-            try {
-                conexion.close();
-                System.out.println("Conexion cerrada.");
-            } catch (Exception e) {
-                System.out.println("No se pudo cerrar la conexión.");
-            }
         }
     }
     
@@ -72,15 +57,5 @@ public class ListaProductos extends ArrayList{
         }
         
         return nombres;
-    }
-    
-    public ArrayList precios() {
-        ArrayList precios = new ArrayList();
-        
-        for(Producto p:lista) {
-            precios.add(p.getPrecio());
-        }
-        
-        return precios;
     }
 }

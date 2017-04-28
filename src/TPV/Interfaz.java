@@ -49,6 +49,7 @@ public class Interfaz extends javax.swing.JFrame {
         spin = new javax.swing.JSpinner(new SpinnerNumberModel(1,1,500,1));
         btnAdd = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        btnMod = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TPV");
@@ -130,7 +131,7 @@ public class Interfaz extends javax.swing.JFrame {
                 btnAddActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 210, 50));
+        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 210, 50));
 
         btnDelete.setText("ELIMINAR PRODUCTO");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -138,7 +139,10 @@ public class Interfaz extends javax.swing.JFrame {
                 btnDeleteActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, 230, 50));
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 190, 50));
+
+        btnMod.setText("GESTIONAR PRODUCTOS");
+        getContentPane().add(btnMod, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, 210, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -236,6 +240,7 @@ public class Interfaz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnMod;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

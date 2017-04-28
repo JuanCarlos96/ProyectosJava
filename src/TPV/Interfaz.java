@@ -25,6 +25,7 @@ public class Interfaz extends javax.swing.JFrame {
         for(String s:nombres) {
             jcb.addItem(s);
         }
+        lblTotal.setText("0.0");
     }
 
     /**
@@ -41,6 +42,9 @@ public class Interfaz extends javax.swing.JFrame {
         jcb = new javax.swing.JComboBox<>();
         lblID = new javax.swing.JLabel();
         panel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         spin = new javax.swing.JSpinner(new SpinnerNumberModel(1,1,500,1));
         btnAdd = new javax.swing.JButton();
@@ -103,6 +107,19 @@ public class Interfaz extends javax.swing.JFrame {
         getContentPane().add(lblID, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 60, 50));
 
         panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Trebuchet MS", 0, 36)); // NOI18N
+        jLabel1.setText("TOTAL :");
+        panel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 140, 50));
+
+        lblTotal.setFont(new java.awt.Font("Trebuchet MS", 0, 36)); // NOI18N
+        panel.add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 10, 150, 50));
+
+        jLabel3.setFont(new java.awt.Font("Trebuchet MS", 0, 36)); // NOI18N
+        jLabel3.setText("€");
+        panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 10, 20, 50));
+
         getContentPane().add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 660, 70));
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 200, 10, 310));
         getContentPane().add(spin, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 60, 90, -1));
@@ -152,8 +169,15 @@ public class Interfaz extends javax.swing.JFrame {
             fila[0] = producto.getId();
             fila[1] = producto.getNombre();
             fila[2] = cantidad;
-            fila[3] = producto.getPrecio();
+            fila[3] = producto.getPrecio()*cantidad;
             modelo.addRow(fila);
+            float preciototal = 0;
+            for (int i=0; i<modelo.getRowCount(); i++) {
+                preciototal += (float) modelo.getValueAt(i, 3);
+            }
+            preciototal = (float) (preciototal*1.21);
+            float round =(float) ((float) Math.round(preciototal * 100.0)/100.0);
+            lblTotal.setText(Float.toString(round));
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -165,6 +189,13 @@ public class Interfaz extends javax.swing.JFrame {
         }else{
             modelo.removeRow(r);
         }
+        float preciototal = 0;
+        for (int i=0; i<modelo.getRowCount(); i++) {
+            preciototal += (float) modelo.getValueAt(i, 3);
+        }
+        preciototal = (float) (preciototal*1.21);
+        float round =(float) ((float) Math.round(preciototal * 100.0)/100.0);
+        lblTotal.setText(Float.toString(round));
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
@@ -205,10 +236,13 @@ public class Interfaz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> jcb;
     private javax.swing.JLabel lblID;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JPanel panel;
     private javax.swing.JSpinner spin;
     private javax.swing.JTable tabla;

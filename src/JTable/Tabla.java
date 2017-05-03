@@ -79,7 +79,7 @@ public class Tabla extends JPanel {
                 default: c.setDeportivo((Boolean)o);
             }
             fireTableCellUpdated(row,col);
-        }                
+        }
                 
     }
     

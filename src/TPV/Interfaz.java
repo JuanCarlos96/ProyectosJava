@@ -142,6 +142,11 @@ public class Interfaz extends javax.swing.JFrame {
         getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 190, 50));
 
         btnMod.setText("GESTIONAR PRODUCTOS");
+        btnMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnMod, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, 210, 50));
 
         pack();
@@ -202,6 +207,14 @@ public class Interfaz extends javax.swing.JFrame {
         lblTotal.setText(Float.toString(round));
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void btnModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModActionPerformed
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new TablaProductos().setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_btnModActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -245,7 +258,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> jcb;
+    public static javax.swing.JComboBox<String> jcb;
     private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JPanel panel;

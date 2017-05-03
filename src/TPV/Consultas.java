@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
 
 public class Consultas {
     private static Connection conexion;
@@ -69,5 +70,50 @@ public class Consultas {
             System.out.println("Error en consulta");
         }
         return id;
+    }
+    
+    public static void rellenarTabla(DefaultTableModel modelo) {
+        abrir();
+        try {
+            String sql = "SELECT * FROM producto";
+            Statement st = conexion.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while (rs.next()) {
+                Object[] producto = new Object[3];
+                producto[0] = rs.getInt("idPRODUCTO");
+                producto[1] = rs.getString("nombre");
+                producto[2] = rs.getFloat("precio");
+                modelo.addRow(producto);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error en consulta");
+        }
+    }
+    
+    public static void addProducto(String nombre, float precio) {
+        abrir();
+        try {
+            String sql = "INSERT INTO producto (nombre,precio) VALUES"
+                    + "('"+nombre+"',"+precio+");";
+            Statement st = conexion.createStatement();
+            st.executeUpdate(sql);
+            System.out.println("Datos insertados.");
+        } catch (SQLException ex) {
+            System.out.println("Error al insertar datos.");
+        }
+    }
+    
+    public static void delProducto(String nombre, float precio) {
+        abrir();
+        try {
+            String sql = "INSERT INTO producto (nombre,precio) VALUES"
+                    + "('"+nombre+"',"+precio+");";
+            Statement st = conexion.createStatement();
+            st.executeUpdate(sql);
+            System.out.println("Datos insertados.");
+        } catch (SQLException ex) {
+            System.out.println("Error al insertar datos.");
+        }
     }
 }

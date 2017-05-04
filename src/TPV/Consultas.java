@@ -119,7 +119,7 @@ public class Consultas {
     public static void modProducto(int id,String nombre,float precio) {
         abrir();
         try {
-            String sql = "UPDATE tpv.producto SET nombre='"+nombre+"',precio="+precio+" WHERE idPRODUCTO="+id+";";
+            String sql = "UPDATE producto SET nombre='"+nombre+"',precio="+precio+" WHERE idPRODUCTO="+id+";";
             Statement st = conexion.createStatement();
             st.executeUpdate(sql);
             System.out.println("Datos modificados.");

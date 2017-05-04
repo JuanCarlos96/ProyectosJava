@@ -50,6 +50,8 @@ public class Interfaz extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnMod = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TPV");
@@ -149,6 +151,12 @@ public class Interfaz extends javax.swing.JFrame {
         });
         getContentPane().add(btnMod, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, 210, 50));
 
+        jLabel2.setText("NOMBRE");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, -1, -1));
+
+        jLabel4.setText("CANTIDAD");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -213,6 +221,7 @@ public class Interfaz extends javax.swing.JFrame {
                 new TablaProductos().setVisible(true);
             }
         });
+        jcb.setSelectedIndex(0);
     }//GEN-LAST:event_btnModActionPerformed
 
     /**
@@ -255,7 +264,9 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnMod;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JComboBox<String> jcb;

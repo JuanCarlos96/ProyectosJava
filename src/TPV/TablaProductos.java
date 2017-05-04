@@ -194,7 +194,7 @@ public class TablaProductos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Debe seleccionar un registro");
         }else{
             if(!txtName.getText().isEmpty() && !txtPrice.getText().isEmpty()) {
-                Consultas.modProducto((int)modelo.getValueAt(r,0),(String)modelo.getValueAt(r,1),(float)modelo.getValueAt(r,2));
+                Consultas.modProducto((int)modelo.getValueAt(r,0),txtName.getText(),Float.parseFloat(txtPrice.getText()));
                 this.limpiarTabla();
                 Consultas.rellenarTabla(modelo);
                 tablaDatos.updateUI();

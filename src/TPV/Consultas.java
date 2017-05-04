@@ -104,14 +104,25 @@ public class Consultas {
         }
     }
     
-    public static void delProducto(String nombre, float precio) {
+    public static void delProducto(int id) {
         abrir();
         try {
-            String sql = "INSERT INTO producto (nombre,precio) VALUES"
-                    + "('"+nombre+"',"+precio+");";
+            String sql = "DELETE FROM producto WHERE idPRODUCTO="+id+";";
             Statement st = conexion.createStatement();
             st.executeUpdate(sql);
-            System.out.println("Datos insertados.");
+            System.out.println("Datos borrados.");
+        } catch (SQLException ex) {
+            System.out.println("Error al insertar datos.");
+        }
+    }
+    
+    public static void modProducto(int id,String nombre,float precio) {
+        abrir();
+        try {
+            String sql = "UPDATE tpv.producto SET nombre='"+nombre+"',precio="+precio+" WHERE idPRODUCTO="+id+";";
+            Statement st = conexion.createStatement();
+            st.executeUpdate(sql);
+            System.out.println("Datos modificados.");
         } catch (SQLException ex) {
             System.out.println("Error al insertar datos.");
         }

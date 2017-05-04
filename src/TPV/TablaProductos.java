@@ -7,6 +7,8 @@ package TPV;
 
 import static TPV.Interfaz.jcb;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -38,15 +40,15 @@ public class TablaProductos extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDatos = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        btnDel = new javax.swing.JButton();
+        btnMod = new javax.swing.JButton();
         txtName = new javax.swing.JTextField();
         txtPrice = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
-        setTitle("MODIFICAR PRODUCTOS");
+        setTitle("GESTIONAR PRODUCTOS");
 
         tablaDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -80,16 +82,26 @@ public class TablaProductos extends javax.swing.JFrame {
             tablaDatos.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        jButton1.setText("AÑADIR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd.setText("AÑADIR");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
 
-        jButton2.setText("ELIMINAR");
+        btnDel.setText("ELIMINAR");
+        btnDel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("MODIFICAR");
+        btnMod.setText("MODIFICAR");
+        btnMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("NOMBRE");
 
@@ -102,11 +114,11 @@ public class TablaProductos extends javax.swing.JFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
-                .addComponent(jButton1)
+                .addComponent(btnAdd)
                 .addGap(129, 129, 129)
-                .addComponent(jButton2)
+                .addComponent(btnDel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
+                .addComponent(btnMod)
                 .addGap(78, 78, 78))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -132,9 +144,9 @@ public class TablaProductos extends javax.swing.JFrame {
                     .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnAdd)
+                    .addComponent(btnDel)
+                    .addComponent(btnMod))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -142,9 +154,30 @@ public class TablaProductos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         if(!txtName.getText().isEmpty() && !txtPrice.getText().isEmpty()) {
             Consultas.addProducto(txtName.getText(), Float.parseFloat(txtPrice.getText()));
+            this.limpiarTabla();
+            Consultas.rellenarTabla(modelo);
+            tablaDatos.updateUI();
+            lista = new ListaProductos();
+            nombres = lista.nombres();
+            for(String s:nombres) {
+                jcb.addItem(s);
+            }
+            txtName.setText("");
+            txtPrice.setText("");
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
+        int r = tablaDatos.getSelectedRow();
+        if(r<0) {
+            JOptionPane.showMessageDialog(this,"Debe seleccionar un registro");
+        }else{
+            Consultas.delProducto((int) modelo.getValueAt(r, 0));
+            modelo.removeRow(r);
+            this.limpiarTabla();
             Consultas.rellenarTabla(modelo);
             tablaDatos.updateUI();
             lista = new ListaProductos();
@@ -153,8 +186,40 @@ public class TablaProductos extends javax.swing.JFrame {
                 jcb.addItem(s);
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnDelActionPerformed
 
+    private void btnModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModActionPerformed
+        int r = tablaDatos.getSelectedRow();
+        if(r<0) {
+            JOptionPane.showMessageDialog(this,"Debe seleccionar un registro");
+        }else{
+            if(!txtName.getText().isEmpty() && !txtPrice.getText().isEmpty()) {
+                Consultas.modProducto((int)modelo.getValueAt(r,0),(String)modelo.getValueAt(r,1),(float)modelo.getValueAt(r,2));
+                this.limpiarTabla();
+                Consultas.rellenarTabla(modelo);
+                tablaDatos.updateUI();
+                lista = new ListaProductos();
+                nombres = lista.nombres();
+                for(String s:nombres) {
+                    jcb.addItem(s);
+                }
+                txtName.setText("");
+                txtPrice.setText("");
+            }
+        }
+    }//GEN-LAST:event_btnModActionPerformed
+
+    private void limpiarTabla(){
+        try {
+            int filas=tablaDatos.getRowCount();
+            for (int i = 0;filas>i; i++) {
+                modelo.removeRow(0);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -191,9 +256,9 @@ public class TablaProductos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDel;
+    private javax.swing.JButton btnMod;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

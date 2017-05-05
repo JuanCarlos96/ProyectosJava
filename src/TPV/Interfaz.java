@@ -45,6 +45,8 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         spin = new javax.swing.JSpinner(new SpinnerNumberModel(1,1,500,1));
         btnAdd = new javax.swing.JButton();
@@ -52,6 +54,11 @@ public class Interfaz extends javax.swing.JFrame {
         btnMod = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        lblTicket = new javax.swing.JLabel();
+        lblDate = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TPV");
@@ -68,14 +75,14 @@ public class Interfaz extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nombre", "Cantidad", "Precio"
+                "ID", "Nombre", "Cantidad", "Precio", "Subtotal"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -94,9 +101,10 @@ public class Interfaz extends javax.swing.JFrame {
             tabla.getColumnModel().getColumn(1).setPreferredWidth(300);
             tabla.getColumnModel().getColumn(2).setResizable(false);
             tabla.getColumnModel().getColumn(3).setResizable(false);
+            tabla.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 660, 230));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 660, 220));
 
         jcb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un producto" }));
         jcb.addActionListener(new java.awt.event.ActionListener() {
@@ -122,6 +130,12 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Trebuchet MS", 0, 36)); // NOI18N
         jLabel3.setText("€");
         panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 10, 20, 50));
+
+        jButton1.setText("NUEVO TICKET");
+        panel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 50));
+
+        jButton2.setText("IMPRIMIR TICKET");
+        panel.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 150, 50));
 
         getContentPane().add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 660, 70));
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 200, 10, 310));
@@ -157,6 +171,17 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel4.setText("CANTIDAD");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, -1, -1));
 
+        jLabel5.setText("IVA 21%");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 420, -1, -1));
+
+        jLabel6.setText("TICKET : ");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        jLabel7.setText("FECHA : ");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 10, -1, -1));
+        getContentPane().add(lblTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 230, 10));
+        getContentPane().add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 120, 10));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -182,19 +207,22 @@ public class Interfaz extends javax.swing.JFrame {
             Producto producto = new Producto(Integer.parseInt(lblID.getText()),nombre,precio);
             
             DefaultTableModel modelo = (DefaultTableModel)tabla.getModel();
-            Object[] fila = new Object[4];
+            Object[] fila = new Object[5];
             fila[0] = producto.getId();
             fila[1] = producto.getNombre();
             fila[2] = cantidad;
-            fila[3] = producto.getPrecio()*cantidad;
+            fila[3] = producto.getPrecio();
+            fila[4] = producto.getPrecio()*cantidad;
             modelo.addRow(fila);
             float preciototal = 0;
             for (int i=0; i<modelo.getRowCount(); i++) {
-                preciototal += (float) modelo.getValueAt(i, 3);
+                preciototal += (float) modelo.getValueAt(i, 4);
             }
             preciototal = (float) (preciototal*1.21);
             float round =(float) ((float) Math.round(preciototal * 100.0)/100.0);
             lblTotal.setText(Float.toString(round));
+            
+            
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -263,14 +291,21 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnMod;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JComboBox<String> jcb;
+    private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblID;
+    private javax.swing.JLabel lblTicket;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JPanel panel;
     private javax.swing.JSpinner spin;

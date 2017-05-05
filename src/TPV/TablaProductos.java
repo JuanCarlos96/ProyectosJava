@@ -8,7 +8,6 @@ package TPV;
 import static TPV.Interfaz.jcb;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -49,6 +48,11 @@ public class TablaProductos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setTitle("GESTIONAR PRODUCTOS");
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         tablaDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -71,6 +75,11 @@ public class TablaProductos extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tablaDatos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tablaDatos);
@@ -208,6 +217,16 @@ public class TablaProductos extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnModActionPerformed
+
+    private void tablaDatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosMouseClicked
+        txtName.setText((String) modelo.getValueAt(tablaDatos.getSelectedRow(), 1));
+        txtPrice.setText(Float.toString((float) modelo.getValueAt(tablaDatos.getSelectedRow(), 2)));
+    }//GEN-LAST:event_tablaDatosMouseClicked
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        txtName.setText("");
+        txtPrice.setText("");
+    }//GEN-LAST:event_formMouseClicked
 
     private void limpiarTabla(){
         try {

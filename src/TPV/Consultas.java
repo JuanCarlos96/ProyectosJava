@@ -55,7 +55,7 @@ public class Consultas {
     }
     
     public static float consultaPrecio(String nombre) {
-        float id = 0;
+        float precio = 0;
         abrir();
         
         try {
@@ -64,12 +64,12 @@ public class Consultas {
             ResultSet rs = st.executeQuery(sql);
             
             while (rs.next()) {
-                id = rs.getFloat("precio");
+                precio = rs.getFloat("precio");
             }
         } catch (SQLException ex) {
             System.out.println("Error en consulta");
         }
-        return id;
+        return precio;
     }
     
     public static void rellenarTabla(DefaultTableModel modelo) {
@@ -126,5 +126,24 @@ public class Consultas {
         } catch (SQLException ex) {
             System.out.println("Error al insertar datos.");
         }
+    }
+    
+    public static int consultaIdTicket() {
+        int id=0;
+        abrir();
+        
+        try {
+            String sql = "SELECT ifnull(max(idTICKET),0) FROM ticket;";
+            Statement st = conexion.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while (rs.next()) {
+                id = rs.getInt("idTICKET");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error en consulta");
+        }
+        id++;
+        return id;
     }
 }

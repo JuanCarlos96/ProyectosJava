@@ -138,7 +138,7 @@ public class Consultas {
             ResultSet rs = st.executeQuery(sql);
             
             while (rs.next()) {
-                id = rs.getInt("idTICKET");
+                id = rs.getInt("max(idTICKET)");
             }
         } catch (SQLException ex) {
             System.out.println("Error en consulta: No existe ningún ID de ticket.");
@@ -157,6 +157,18 @@ public class Consultas {
             System.out.println("Ticket insertado.");
         } catch (SQLException ex) {
             System.out.println("Error al insertar datos del nuevo ticket.");
+        }
+    }
+    
+    public static void modTicket(int id,float precio_total) {
+        abrir();
+        try {
+            String sql = "UPDATE ticket SET precio_total="+precio_total+" WHERE idTICKET="+id+";";
+            Statement st = conexion.createStatement();
+            st.executeUpdate(sql);
+            System.out.println("Ticket guardado.");
+        } catch (SQLException ex) {
+            System.out.println("Error al guardar el ticket.");
         }
     }
     

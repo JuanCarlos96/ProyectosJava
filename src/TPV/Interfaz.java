@@ -5,9 +5,13 @@
  */
 package TPV;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
@@ -329,11 +333,11 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModActionPerformed
 
     private void btnNewTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTicketActionPerformed
-        lblTicket.setText(Integer.toString(Consultas.consultaIdTicket()));
         jcb.setSelectedIndex(0);
         this.limpiarTabla();
         spin.setValue(1);
         Consultas.removeAllCompras(Integer.parseInt(lblTicket.getText()));
+        lblTotal.setText("");
     }//GEN-LAST:event_btnNewTicketActionPerformed
 
     private void btnSaveTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveTicketActionPerformed
@@ -354,7 +358,36 @@ public class Interfaz extends javax.swing.JFrame {
             ticket+="\n---------------------------------------------------------";
             ticket+="\nPRECIO TOTAL: "+lblTotal.getText()+"€";
             
-            JOptionPane.showMessageDialog(this, ticket);
+            JFileChooser fc = new JFileChooser();
+            int seleccion = fc.showSaveDialog(this);
+            
+            BufferedWriter bw = null;
+            
+            if(seleccion == JFileChooser.ERROR) JOptionPane.showMessageDialog(this, "Error");
+            
+            if(seleccion == JFileChooser.APPROVE_OPTION) {
+                try{
+                    File file = fc.getSelectedFile();
+                    bw = new BufferedWriter(new FileWriter(file));
+                    bw.write(ticket.replaceAll("\\n", "\r\n"));
+                    Consultas.modTicket(Integer.parseInt(lblTicket.getText()), Float.parseFloat(lblTotal.getText()));
+                    lblTicket.setText(Integer.toString(Consultas.consultaIdTicket()));
+                    Consultas.addTicket(Integer.parseInt(lblTicket.getText()), lblDate.getText());
+                    jcb.setSelectedIndex(0);
+                    this.limpiarTabla();
+                    spin.setValue(1);
+                    lblTotal.setText("");
+                }catch (Exception ex3) {
+                    ex3.printStackTrace();
+                }finally{
+                    try {
+                        if (null != bw)
+                           bw.close();
+                    } catch (Exception ex4) {
+                       ex4.printStackTrace();
+                    }
+                }
+            }
         }else {
             JOptionPane.showMessageDialog(this, "Ningún producto añadido a la compra");
         }

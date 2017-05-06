@@ -5,6 +5,8 @@
  */
 package TPV;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
@@ -18,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
 public class Interfaz extends javax.swing.JFrame {
     private ListaProductos lista = new ListaProductos();
     private ArrayList<String> nombres;
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    LocalDate localDate = LocalDate.now();
     
     public Interfaz() {
         initComponents();
@@ -26,6 +30,9 @@ public class Interfaz extends javax.swing.JFrame {
             jcb.addItem(s);
         }
         lblTotal.setText("0.0");
+        lblTicket.setText(Integer.toString(Consultas.consultaIdTicket()));
+        lblDate.setText(dtf.format(localDate));
+        Consultas.addTicket(Integer.parseInt(lblTicket.getText()), lblDate.getText());
     }
 
     /**
@@ -45,8 +52,8 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnNewTicket = new javax.swing.JButton();
+        btnSaveTicket = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         spin = new javax.swing.JSpinner(new SpinnerNumberModel(1,1,500,1));
         btnAdd = new javax.swing.JButton();
@@ -68,7 +75,6 @@ public class Interfaz extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -104,18 +110,14 @@ public class Interfaz extends javax.swing.JFrame {
             tabla.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 660, 220));
-
         jcb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un producto" }));
         jcb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbActionPerformed(evt);
             }
         });
-        getContentPane().add(jcb, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, 460, -1));
 
         lblID.setBorder(javax.swing.BorderFactory.createTitledBorder("ID"));
-        getContentPane().add(lblID, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 60, 50));
 
         panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -131,15 +133,21 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel3.setText("€");
         panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 10, 20, 50));
 
-        jButton1.setText("NUEVO TICKET");
-        panel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 50));
+        btnNewTicket.setText("NUEVO TICKET");
+        btnNewTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewTicketActionPerformed(evt);
+            }
+        });
+        panel.add(btnNewTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 50));
 
-        jButton2.setText("IMPRIMIR TICKET");
-        panel.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 150, 50));
-
-        getContentPane().add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 660, 70));
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 200, 10, 310));
-        getContentPane().add(spin, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 60, 90, -1));
+        btnSaveTicket.setText("IMPRIMIR TICKET");
+        btnSaveTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveTicketActionPerformed(evt);
+            }
+        });
+        panel.add(btnSaveTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 150, 50));
 
         btnAdd.setText("AGREGAR PRODUCTO");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -147,7 +155,6 @@ public class Interfaz extends javax.swing.JFrame {
                 btnAddActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 210, 50));
 
         btnDelete.setText("ELIMINAR PRODUCTO");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -155,7 +162,6 @@ public class Interfaz extends javax.swing.JFrame {
                 btnDeleteActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 190, 50));
 
         btnMod.setText("GESTIONAR PRODUCTOS");
         btnMod.addActionListener(new java.awt.event.ActionListener() {
@@ -163,24 +169,92 @@ public class Interfaz extends javax.swing.JFrame {
                 btnModActionPerformed(evt);
             }
         });
-        getContentPane().add(btnMod, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, 210, 50));
 
         jLabel2.setText("NOMBRE");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, -1, -1));
 
         jLabel4.setText("CANTIDAD");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, -1, -1));
 
         jLabel5.setText("IVA 21%");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 420, -1, -1));
 
         jLabel6.setText("TICKET : ");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jLabel7.setText("FECHA : ");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 10, -1, -1));
-        getContentPane().add(lblTicket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 230, 10));
-        getContentPane().add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 120, 10));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDate, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jcb, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(spin, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(570, 570, 570)
+                                .addComponent(jLabel5))
+                            .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblTicket, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(6, 6, 6)
+                        .addComponent(jcb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(6, 6, 6)
+                        .addComponent(spin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabel5)
+                        .addGap(6, 6, 6)
+                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -196,6 +270,7 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jcbActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Consultas.delTicket(Integer.parseInt(lblTicket.getText()));
         Consultas.cerrar();
     }//GEN-LAST:event_formWindowClosing
 
@@ -222,7 +297,7 @@ public class Interfaz extends javax.swing.JFrame {
             float round =(float) ((float) Math.round(preciototal * 100.0)/100.0);
             lblTotal.setText(Float.toString(round));
             
-            
+            Consultas.addCompra(producto.getId(), Integer.parseInt(lblTicket.getText()), cantidad);
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -232,6 +307,7 @@ public class Interfaz extends javax.swing.JFrame {
         if(r<0) {
             JOptionPane.showMessageDialog(this,"Debe seleccionar un registro");
         }else{
+            Consultas.delCompra((int)modelo.getValueAt(r, 0), Integer.parseInt(lblTicket.getText()));
             modelo.removeRow(r);
         }
         float preciototal = 0;
@@ -252,6 +328,49 @@ public class Interfaz extends javax.swing.JFrame {
         jcb.setSelectedIndex(0);
     }//GEN-LAST:event_btnModActionPerformed
 
+    private void btnNewTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTicketActionPerformed
+        lblTicket.setText(Integer.toString(Consultas.consultaIdTicket()));
+        jcb.setSelectedIndex(0);
+        this.limpiarTabla();
+        spin.setValue(1);
+        Consultas.removeAllCompras(Integer.parseInt(lblTicket.getText()));
+    }//GEN-LAST:event_btnNewTicketActionPerformed
+
+    private void btnSaveTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveTicketActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel)tabla.getModel();
+        ArrayList<Producto> productos = new ArrayList();
+        int filas=tabla.getRowCount();
+        if(filas!=0) {
+            for (int i = 0;filas>i; i++) {
+                productos.add(new Producto((int)modelo.getValueAt(i, 0),(String)modelo.getValueAt(i, 1),(float)modelo.getValueAt(i, 3)));
+            }
+            
+            String ticket="Ticket "+lblTicket.getText()+"                  Fecha: "+lblDate.getText()+"\n\n";
+            int row=0;
+            for(Producto p:productos) {
+                ticket+=p+" x "+modelo.getValueAt(row, 2)+"    "+Math.round((float) modelo.getValueAt(row, 4)*100.0)/100.0+"\n";
+                row++;
+            }
+            ticket+="\n---------------------------------------------------------";
+            ticket+="\nPRECIO TOTAL: "+lblTotal.getText()+"€";
+            
+            JOptionPane.showMessageDialog(this, ticket);
+        }else {
+            JOptionPane.showMessageDialog(this, "Ningún producto añadido a la compra");
+        }
+    }//GEN-LAST:event_btnSaveTicketActionPerformed
+
+    private void limpiarTabla(){
+        DefaultTableModel modelo = (DefaultTableModel)tabla.getModel();
+        try {
+            int filas=tabla.getRowCount();
+            for (int i = 0;filas>i; i++) {
+                modelo.removeRow(0);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -291,8 +410,8 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnMod;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnNewTicket;
+    private javax.swing.JButton btnSaveTicket;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

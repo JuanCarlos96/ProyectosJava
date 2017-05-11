@@ -1,28 +1,32 @@
 package TPV;
 
-import java.util.ArrayList;
+import java.sql.Date;
 
 public class Ticket {
     private int id;
-    private String fecha;
+    private Date fecha;
     private float precio_total;
-    private ArrayList<Producto> productos;
 
-    public Ticket(int id, String fecha, float precio_total, ArrayList<Producto> productos) {
+    public Ticket(int id, Date fecha, float precio_total) {
         this.id = id;
         this.fecha = fecha;
         this.precio_total = precio_total;
-        this.productos = productos;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public float getPrecio_total() {
+        return precio_total;
     }
 
     @Override
     public String toString() {
-        String ticket="Ticket "+id+"                  Fecha: "+fecha+"\n\n";
-        for(Producto p:productos) {
-            ticket+=p+"\n";
-        }
-        ticket+="---------------------------------------------------------";
-        ticket+="\nPRECIO TOTAL: "+precio_total+"€";
-        return ticket;
+        return "Ticket "+id;
     }
 }

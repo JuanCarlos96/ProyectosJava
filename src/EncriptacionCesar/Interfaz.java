@@ -1,5 +1,7 @@
 package EncriptacionCesar;
 
+import javax.swing.SpinnerNumberModel;
+
 public class Interfaz extends javax.swing.JFrame {
     private String abecedario = "abcdefghijklmnñopqrstuvwxyz";
     
@@ -23,13 +25,18 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        spin = new javax.swing.JSpinner();
-        btnCodificar = new javax.swing.JButton();
+        spin = new javax.swing.JSpinner(new SpinnerNumberModel(0,0,26,1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         txtOriginal.setColumns(20);
         txtOriginal.setRows(5);
+        txtOriginal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtOriginalKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(txtOriginal);
 
         txtEncriptado.setEditable(false);
@@ -43,10 +50,9 @@ public class Interfaz extends javax.swing.JFrame {
 
         jLabel3.setText("Desplazamiento");
 
-        btnCodificar.setText("CODIFICAR");
-        btnCodificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCodificarActionPerformed(evt);
+        spin.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spinStateChanged(evt);
             }
         });
 
@@ -63,54 +69,57 @@ public class Interfaz extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
-                                .addComponent(btnCodificar)
-                                .addGap(210, 210, 210)))
+                                .addGap(210, 503, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(spin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(206, 206, 206))))
+                        .addComponent(spin, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(178, 178, 178))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
                     .addComponent(spin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(btnCodificar))
+                .addGap(16, 16, 16)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCodificarActionPerformed
+    private void txtOriginalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOriginalKeyReleased
         if (!txtOriginal.getText().isEmpty()) {
             codificar(txtOriginal.getText());
+        }else {
+            txtEncriptado.setText("");
         }
-    }//GEN-LAST:event_btnCodificarActionPerformed
+    }//GEN-LAST:event_txtOriginalKeyReleased
+
+    private void spinStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinStateChanged
+        if (!txtOriginal.getText().isEmpty()) {
+            codificar(txtOriginal.getText());
+        }else {
+            txtEncriptado.setText("");
+        }
+    }//GEN-LAST:event_spinStateChanged
 
     public void codificar(String texto) {
         String encriptado="";
         for (int i=0; i<texto.length(); i++) {
             char c = texto.charAt(i);
-            int indexOf = abecedario.indexOf(c+(int)spin.getValue());
-            if (indexOf==-1) {
-                indexOf = (abecedario.indexOf(c)%26)+(int)spin.getValue();
-            }
+            int indexOf = (abecedario.indexOf(c)+(int)spin.getValue())%27;
             encriptado += abecedario.charAt(indexOf);
         }
         txtEncriptado.setText(encriptado);
@@ -152,7 +161,6 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCodificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -117,10 +117,18 @@ public class Interfaz extends javax.swing.JFrame {
 
     public void codificar(String texto) {
         String encriptado="";
-        for (int i=0; i<texto.length(); i++) {
-            char c = texto.charAt(i);
-            int indexOf = (abecedario.indexOf(c)+(int)spin.getValue())%27;
-            encriptado += abecedario.charAt(indexOf);
+        String[] lineas = texto.split("\n");
+        for(String s:lineas) {
+            for (int i=0; i<s.length(); i++) {
+                Character c = s.charAt(i);
+                if (c.equals(' ')) {
+                    encriptado += " ";
+                } else {
+                    int indexOf = (abecedario.indexOf(c)+(int)spin.getValue())%27;
+                    encriptado += abecedario.charAt(indexOf);
+                }
+            }
+            encriptado += "\n";
         }
         txtEncriptado.setText(encriptado);
     }

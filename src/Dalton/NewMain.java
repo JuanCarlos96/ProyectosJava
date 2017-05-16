@@ -9,43 +9,48 @@ public class NewMain {
         String medidas,resultado="";
         ArrayList<Integer> alturas = new ArrayList();
         String[] medidas2;
-        int cont;
+        int cont,personajes;
         
         System.out.print("Introduzca nº de personajes en la viñeta: ");
-        int personajes = teclado.nextInt();
+        personajes = teclado.nextInt();
         
         while(personajes!=0) {
             System.out.println("Introduzca altura de los personajes: ");
-            medidas = teclado.nextLine();
-            
-            medidas2 = medidas.split(" ");
-            
-            for (String s : medidas2) {
-                alturas.add(Integer.parseInt(s));
+            for(int i=0;i<personajes;i++) {
+                alturas.add(teclado.nextInt());
             }
             
-            while(!alturas.isEmpty()) {
-                cont=0;
-                for(int i=0; i<alturas.size()-1; i++) {
-                    int j = alturas.get(i);
-                    int k = alturas.get(i+1);
-                    if (j>k){
-                        if (j-1==k){
-                            cont++;
-                        }
-                    }
-                    if (j<k){
-                        if (j==k-1){
-                            cont++;
-                        }
+//            medidas = teclado.nextLine();
+//            
+//            medidas2 = medidas.split(" ");
+//            
+//            for (String s : medidas2) {
+//                alturas.add(Integer.parseInt(s));
+//            }
+
+            cont=0;
+            for(int i=0; i<alturas.size()-1; i++) {
+                int j = alturas.get(i);
+                int k = alturas.get(i+1);
+                if (j>k){
+                    if (j-1==k){
+                        cont++;
                     }
                 }
-                if (cont==4) resultado+="DALTON\n";
-                
-                if (cont==alturas.size()-1) resultado+="DUDA\n";
-                
-                if (cont<alturas.size()-1) resultado+="DESCONOCIDO\n";
+                if (j<k){
+                    if (j==k-1){
+                        cont++;
+                    }
+                }
             }
+            if (cont==3) resultado+="DALTON\n";
+
+            if (cont!=3 && cont>alturas.size()-2) resultado+="DUDA\n";
+
+            if (cont<alturas.size()-2) resultado+="DESCONOCIDO\n";
+            
+            System.out.print("Introduzca nº de personajes en la viñeta: ");
+            personajes = teclado.nextInt();
         }
         System.out.println(resultado);
     }

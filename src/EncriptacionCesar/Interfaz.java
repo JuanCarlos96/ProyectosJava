@@ -3,7 +3,7 @@ package EncriptacionCesar;
 import javax.swing.SpinnerNumberModel;
 
 public class Interfaz extends javax.swing.JFrame {
-    private String abecedario = "abcdefghijklmnñopqrstuvwxyz";
+    private String abecedario = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
     
     public Interfaz() {
         initComponents();
@@ -124,7 +124,7 @@ public class Interfaz extends javax.swing.JFrame {
                 if (c.equals(' ')) {
                     encriptado += " ";
                 } else {
-                    int indexOf = (abecedario.indexOf(c)+(int)spin.getValue())%27;
+                    int indexOf = (abecedario.indexOf(c)+(int)spin.getValue())%abecedario.length();
                     encriptado += abecedario.charAt(indexOf);
                 }
             }

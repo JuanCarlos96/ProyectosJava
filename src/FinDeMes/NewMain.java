@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class NewMain {
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
-        int op,num1,num2,resto;
+        int op,num1,num2;
         String cadena;
         String[] num;
         String resultado="--------------------------\n";

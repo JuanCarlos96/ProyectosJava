@@ -19,10 +19,9 @@ public class NewMain {
                 num = cadena.split(" ");
                 num1 += Integer.parseInt(num[0]);
                 num2 = Integer.parseInt(num[1]);
-                resto = num1-num2;
-                num1=resto;
+                num1 = num1-num2;
                 
-                if(resto<0) {
+                if(num1<0) {
                     resultado+="NO\n";
                 }else{
                     resultado+="SI\n";
